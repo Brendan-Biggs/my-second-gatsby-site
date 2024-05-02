@@ -38,7 +38,7 @@ exports.createPages = ({ actions, graphql }) => {
                 `
 query MyQuery {
     Drupal {
-                nodeRecipes(first: 3) {
+                nodeRecipes(first: 10) {
                     edges {
                         node {
                             changed

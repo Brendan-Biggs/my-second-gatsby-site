@@ -1,7 +1,7 @@
 import { graphql } from 'gatsby'
 import React from 'react'
 
-/*
+
 const pageTemplate = props => {
     const data = {
         nodeFood: props.pageContext.data
@@ -13,17 +13,10 @@ const pageTemplate = props => {
     return (
         <>
             <h4>{data.nodeFood?.title}</h4>
-            <p>{data.nodeFood?.cookingTime}</p>
+			<p>{data.nodeFood?.cookingTime}</p>
             </>
     )
 }
-*/
 
-export default function BlogPost({ data }) {
-  return (
-        <>
-            <h4>{data.nodeFood?.title}</h4>
-            <p>{data.nodeFood?.cookingTime}</p>
-            </>
-    )
-}
+export default pageTemplate;
+
