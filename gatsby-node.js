@@ -37,24 +37,35 @@ exports.createPages = ({ actions, graphql }) => {
             graphql(
                 `
 query MyQuery {
-    Drupal {
-                nodeRecipes(first: 10) {
-                    edges {
-                        node {
-                            changed
-                            id
-                            cookingTime
-                            created
-                            path
-                            status
-                            title
-                            preparationTime
-                            numberOfServings
-                        }
-                    }
-                }
-            }
+  Drupal {
+    nodeRecipes(first: 10) {
+      edges {
+        node {
+          changed
+          id
+          cookingTime
+          created
+          path
+          status
+          title
+          preparationTime
+          numberOfServings
+          recipeInstruction {
+            value
+            processed
+            format
+          }
+          ingredients
+          summary {
+            format
+            processed
+            value
+          }
+        }
+      }
     }
+  }
+}
 `
             ).then(result => {
                 // shows during build/dev
@@ -63,19 +74,19 @@ query MyQuery {
                 if (result.errors) {
                     reject(result.errors)
                 }
-                console.log("PAGES");
-                console.log(result.data.Drupal.nodeRecipes);
+                //console.log("PAGES");
+                //console.log(result.data.Drupal.nodeRecipes);
                 const pages = result.data.Drupal.nodeRecipes.edges;
 
                 //result.data.allNodeHorse.edges.forEach(({ node }, index) => {
                 pages.forEach(({ node }, index) => {
                     // console.log(node);
-                    console.log("PATH: ");
-                    console.log(node.path);
+                    //console.log("PATH: ");
+                    //console.log(node.path);
                     // const page_path = (node.path && node.path.alias) ? node.path.alias : '/node/' + node.drupal_id;
                     const page_path = node.path
-                    console.log(page_path);
-                    console.log(node);
+                    //console.log(page_path);
+                    //console.log(node);
                                 actions.createPage({
                         path: `${page_path}`,
                         component: pageTemplate,

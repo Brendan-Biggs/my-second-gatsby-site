@@ -5,6 +5,7 @@ import Seo from '../../components/seo'
 
 
 const RecipePage = ({ data }) => {
+	
   return (
 	<Layout pageTitle="My Recipe Posts">
       {
@@ -12,8 +13,8 @@ const RecipePage = ({ data }) => {
           <article key={node.id}>
 			
             <h2>
-              <Link to={`${node.path}`}>
-                {node.title}
+              <Link to={`${node.node.path}`}>
+                {node.node.title}
               </Link>
             </h2>
 			<p> <b>-------------------------------------- </b></p>
@@ -21,21 +22,27 @@ const RecipePage = ({ data }) => {
         ))
       }
     </Layout>
-  
-  
-  
-  
-  /*
-    <Layout pageTitle="My Recipe Posts">
-      <h1> Temporary Test content for Recipe splash page </h1>
-	  <p> Hold Please </p>
-	  <Link to={`{data.Drupal.nodeRecipes.edges.node.path}`}>
-                This is test link text
-              </Link>
-    </Layout>
-	*/
-  )
+	)
+	console.log("RECIPE INDEX DATA")
+	console.log({data})
 }
+  
+  
+export const query = graphql`
+query {
+    Drupal {
+                nodeRecipes(first: 15) {
+                    edges {
+                        node {
+                            id
+                            path
+                            title
+                        }
+                    }
+                }
+            }
+    }
+`
 
 export const Head = () => <Seo title="My Recipe Posts" />
 
