@@ -28,7 +28,7 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
 exports.createPages = ({ actions, graphql }) => {
     const { createPage } = actions
     return new Promise((resolve, reject) => {
-        // const articleTemplate = path.resolve('src/templates/node/article/index.js')
+        const articleTemplate = path.resolve(`src/pages/article.js`)
         const pageTemplate = path.resolve(`src/pages/recipe.js`)
 
         // page building queries
@@ -44,7 +44,6 @@ query MyQuery {
           changed
           id
           cookingTime
-          created
           path
           status
           title
@@ -61,7 +60,24 @@ query MyQuery {
             processed
             value
           }
+          created
         }
+      }
+    }
+    nodeArticles(first: 10) {
+      nodes {
+        path
+        title
+        author {
+          displayName
+        }
+        body {
+          summary
+          format
+          processed
+          value
+        }
+        id
       }
     }
   }
@@ -77,6 +93,9 @@ query MyQuery {
                 //console.log("PAGES");
                 //console.log(result.data.Drupal.nodeRecipes);
                 const pages = result.data.Drupal.nodeRecipes.edges;
+				const arts = result.data.Drupal.nodeArticles.nodes;
+				console.log("ARTS")
+				console.log(arts)
 
                 //result.data.allNodeHorse.edges.forEach(({ node }, index) => {
                 pages.forEach(({ node }, index) => {
@@ -90,6 +109,27 @@ query MyQuery {
                                 actions.createPage({
                         path: `${page_path}`,
                         component: pageTemplate,
+                        context: {
+                            nid: node.id,
+                            data: node,
+                        },
+                    })
+                })
+
+                //result.data.allNodeHorse.edges.forEach(({ node }, index) => {
+                arts.forEach(({ node }, index) => {
+                    // console.log(node);
+                    //console.log("PATH: ");
+                    //console.log(node.path);
+                    // const page_path = (node.path && node.path.alias) ? node.path.alias : '/node/' + node.drupal_id;
+					console.log("***Art Node***")
+					console.log(node)
+                    const art_path = node.path
+                    //console.log(page_path);
+                    //console.log(node);
+                                actions.createPage({
+                        path: `${art_path}`,
+                        component: articleTemplate,
                         context: {
                             nid: node.id,
                             data: node,
